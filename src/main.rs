@@ -10,9 +10,14 @@ use std::convert::Infallible;
 
 use api::index::{Store, post_json, delete_json, update_grocery_list, delete_grocery_list_item, get_grocery_list};
 
+use rbatis::rbatis::Rbatis;
 
 #[tokio::main]
 async fn main() {
+
+    let rb = Rbatis::new();
+    rb.link("mysql://u_lg:123456@localhost:3306/leangoodb").await.unwrap();
+
     let store = Store::new();
     let store_filter = warp::any().map(move || store.clone());
     let add_items = warp::post()
