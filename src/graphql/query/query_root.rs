@@ -30,6 +30,7 @@ pub struct QueryRoot;
 #[Object]
 impl QueryRoot {
   async fn books(&self) -> Vec<Book> {
+    // println!("just logging: {}", &self.id);
       vec![
           Book {
               id: 1,

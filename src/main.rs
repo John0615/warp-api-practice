@@ -4,19 +4,15 @@ use graphql::query::query_root::QueryRoot;
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
 use async_graphql::{EmptyMutation, EmptySubscription, Schema};
 use async_graphql_warp::{BadRequest, Response};
+use dbs::mysql::my_pool;
 
 use http::StatusCode;
 use std::convert::Infallible;
 
 use api::index::{Store, post_json, delete_json, update_grocery_list, delete_grocery_list_item, get_grocery_list};
 
-use rbatis::rbatis::Rbatis;
-
 #[tokio::main]
 async fn main() {
-
-    let rb = Rbatis::new();
-    rb.link("mysql://u_lg:123456@localhost:3306/leangoodb").await.unwrap();
 
     let store = Store::new();
     let store_filter = warp::any().map(move || store.clone());
@@ -51,8 +47,14 @@ async fn main() {
         .and(store_filter.clone())
         .and_then(update_grocery_list);
 
+    // 获取 MySql 数据池后，可以将其增加到：
+    // 1. 作为 async-graphql 的全局数据；
+    // 2. 作为 warp 的应用程序数据，优势是可以进行原子操作；
+    // 3. 使用 lazy-static.rs
+    let my_pool = my_pool().await;
+
     // graphql
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription).finish();
+    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription).data(my_pool).finish();
 
     let graphql_post = async_graphql_warp::graphql(schema).and_then(
         |(schema, request): (
@@ -97,3 +99,6 @@ async fn main() {
 
 mod graphql;
 mod api;
+mod dbs;
+mod models;
+mod service;
