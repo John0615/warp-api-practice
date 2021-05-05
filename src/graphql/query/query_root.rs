@@ -1,4 +1,6 @@
 use async_graphql::*;
+use rbatis::rbatis::Rbatis;
+use crate::models::user::LgUser;
 
 struct Book {
   id: i32,
@@ -52,5 +54,13 @@ impl QueryRoot {
           },
       ]
   }
+
+  async fn all_users(
+        &self,
+        ctx: &Context<'_>,
+    ) -> std::result::Result<Vec<LgUser>, async_graphql::Error> {
+        let my_pool = ctx.data_unchecked::<Rbatis>();
+        crate::service::user_service::all_users(my_pool).await
+    }
 
 }
