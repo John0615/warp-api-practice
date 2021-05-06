@@ -10,7 +10,8 @@ use http::StatusCode;
 use std::convert::Infallible;
 
 use api::index::{Store, post_json, delete_json, update_grocery_list, delete_grocery_list_item, get_grocery_list};
-
+#[macro_use]
+extern crate rbatis;
 #[tokio::main]
 async fn main() {
 

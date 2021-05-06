@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
+// use chrono::NaiveDateTime;
 
-#[rbatis::crud_enable]
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(CRUDTable, Serialize, Deserialize, Clone, Debug)]
 pub struct LgUser {
     pub id: Option<i32>,
     pub email1: Option<String>,
@@ -10,7 +10,7 @@ pub struct LgUser {
     pub pwd: Option<String>,
     pub department: Option<String>,
     pub position: Option<String>,
-    // pub create_datetime: Option<NaiveDateTime>,
+    pub create_datetime: Option<String>,
     pub status: Option<i32>,
     pub head_img_letter: Option<String>,
     pub head_img_name: Option<String>,
@@ -18,7 +18,7 @@ pub struct LgUser {
     pub biography: Option<String>,
     pub register_from: Option<i32>,
     pub signature: Option<String>,
-    // pub ip: String,
+    pub ip: Option<String>,
     pub country_code: Option<String>,
 }
 
@@ -52,9 +52,9 @@ impl LgUser {
         self.position.clone()
     }
 
-    // pub async fn create_datetime(&self) -> Option<NaiveDateTime> {
-    //     self.create_datetime
-    // }
+    pub async fn create_datetime(&self) -> Option<String> {
+        self.create_datetime.clone()
+    }
 
     pub async fn status(&self) -> Option<i32> {
         self.status
@@ -84,9 +84,9 @@ impl LgUser {
         self.signature.clone()
     }
 
-    // // pub async fn ip(&self) -> &str {
-    // //     self.ip.as_str()
-    // // }
+    pub async fn ip(&self) -> Option<String> {
+        self.ip.clone()
+    }
 
     pub async fn country_code(&self) -> Option<String> {
         self.country_code.clone()
