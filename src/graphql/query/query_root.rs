@@ -63,4 +63,14 @@ impl QueryRoot {
         crate::service::user_service::all_users(my_pool).await
     }
 
+    async fn find_user(
+        &self,
+        ctx: &Context<'_>,
+        id: i32,
+    ) -> std::result::Result<LgUser, async_graphql::Error> {
+        println!("id>>>>>>>>>>: {}", id);
+        let my_pool = ctx.data_unchecked::<Rbatis>();
+        crate::service::user_service::find_user(my_pool, id).await
+    }
+
 }
