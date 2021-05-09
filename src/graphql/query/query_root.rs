@@ -1,6 +1,7 @@
 use async_graphql::*;
 use rbatis::rbatis::Rbatis;
 use crate::models::user::LgUser;
+// use rbatis::core::db::db_adapter::DBExecResult;
 
 struct Book {
   id: i32,
@@ -72,5 +73,13 @@ impl QueryRoot {
         let my_pool = ctx.data_unchecked::<Rbatis>();
         crate::service::user_service::find_user(my_pool, id).await
     }
+
+    // async fn insert_user(
+    //     &self,
+    //     ctx: &Context<'_>
+    // ) -> std::result::Result<DBExecResult, async_graphql::Error> {
+    //     let my_pool = ctx.data_unchecked::<Rbatis>();
+    //     crate::service::user_service::insert_user(my_pool).await
+    // }
 
 }
