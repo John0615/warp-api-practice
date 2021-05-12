@@ -1,8 +1,9 @@
 use warp::{http,Filter, http::Response as HttpResponse, Rejection};
 
 use graphql::query::query_root::QueryRoot;
+use graphql::mutation::mutation_root::MutationRoot;
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
-use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use async_graphql::{EmptySubscription, Schema};
 use async_graphql_warp::{BadRequest, Response};
 use dbs::mysql::my_pool;
 
@@ -55,11 +56,11 @@ async fn main() {
     let my_pool = my_pool().await;
 
     // graphql
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription).data(my_pool).finish();
+    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription).data(my_pool).finish();
 
     let graphql_post = async_graphql_warp::graphql(schema).and_then(
         |(schema, request): (
-            Schema<QueryRoot, EmptyMutation, EmptySubscription>,
+            Schema<QueryRoot, MutationRoot, EmptySubscription>,
             async_graphql::Request,
         )| async move { Ok::<_, Infallible>(Response::from(schema.execute(request).await)) },
     );
