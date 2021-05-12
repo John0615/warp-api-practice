@@ -74,12 +74,5 @@ impl QueryRoot {
         crate::service::user_service::find_user(my_pool, id).await
     }
 
-    // async fn insert_user(
-    //     &self,
-    //     ctx: &Context<'_>
-    // ) -> std::result::Result<DBExecResult, async_graphql::Error> {
-    //     let my_pool = ctx.data_unchecked::<Rbatis>();
-    //     crate::service::user_service::insert_user(my_pool).await
-    // }
 
 }

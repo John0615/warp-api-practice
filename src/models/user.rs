@@ -92,3 +92,27 @@ impl LgUser {
         self.country_code.clone()
     }
 }
+
+
+#[rbatis::crud_enable(table_name:"lg_user")]
+#[derive(async_graphql::InputObject, Serialize, Deserialize, Clone, Debug)]
+pub struct NewLgUser {
+    #[graphql(skip)]
+    pub id: i32,
+    pub email1: String,
+    pub phone_number: String,
+    pub nick_name: String,
+    pub pwd: String,
+    pub department: String,
+    pub position: String,
+    pub create_datetime: String,
+    pub status: i32,
+    pub head_img_letter: String,
+    pub head_img_name: String,
+    pub head_img_status: i32,
+    pub biography: String,
+    pub register_from: i32,
+    pub signature: String,
+    pub ip: String,
+    pub country_code: String,
+}
