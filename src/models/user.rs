@@ -94,7 +94,7 @@ impl LgUser {
 }
 
 
-#[rbatis::crud_enable(table_name:"lg_user")]
+#[rbatis::crud_table(table_name:"lg_user")]
 #[derive(async_graphql::InputObject, Serialize, Deserialize, Clone, Debug)]
 pub struct NewLgUser {
     #[graphql(skip)]

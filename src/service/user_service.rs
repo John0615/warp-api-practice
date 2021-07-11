@@ -7,7 +7,7 @@ use crate::util::constant::GqlResult;
 
 pub async fn all_users(my_pool: &Rbatis) -> GqlResult<Vec<LgUser>> {
  
-  let users: Vec<LgUser> = my_pool.fetch_list("").await.unwrap();
+  let users: Vec<LgUser> = my_pool.fetch_list().await.unwrap();
   println!("{:?}", users);
 
   if users.len() > 0 {
@@ -19,7 +19,7 @@ pub async fn all_users(my_pool: &Rbatis) -> GqlResult<Vec<LgUser>> {
 }
 
 pub async fn find_user(my_pool: &Rbatis, id: i32) -> GqlResult<LgUser> {
-  let user: Option<LgUser> = my_pool.fetch_by_id("", &id).await.unwrap();
+  let user: Option<LgUser> = my_pool.fetch_by_column("id", &id.to_string()).await.unwrap();
   match user {
     Some(value) => {
       println!("has value {:?}", value);
@@ -36,7 +36,7 @@ pub async fn get_user_phone_number(
   phone_number: &str,
 ) -> GqlResult<LgUser> {
   let phone_number_wrapper = my_pool.new_wrapper().eq("phone_number", phone_number);
-  let user = my_pool.fetch_by_wrapper::<LgUser>("", &phone_number_wrapper).await;
+  let user = my_pool.fetch_by_wrapper::<LgUser>(&phone_number_wrapper).await;
 
   println!("user>>>>>> {:?}", user);
 
@@ -55,7 +55,7 @@ pub async fn insert_user(my_pool: &Rbatis, mut new_lg_user: NewLgUser) -> GqlRes
     Err(Error::new("phone_number 已存在")
         .extend_with(|_, e| e.set("details", "1_EMAIL_EXIStS")))
   } else {
-    let save_result = my_pool.save("", &new_lg_user).await;
+    let save_result = my_pool.save(&new_lg_user).await;
     match save_result {
       Ok(_value) => {
         println!("phone_number {:?}", &new_lg_user.phone_number);

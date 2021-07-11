@@ -32,4 +32,4 @@ fast_log="1.3"
 bigdecimal = "0.2"
 
 #rbatis支持
-rbatis =  { version = "1.8", default-features = false, features = ["mysql", "postgres"] } 
+rbatis =  { version = "2.0"}
